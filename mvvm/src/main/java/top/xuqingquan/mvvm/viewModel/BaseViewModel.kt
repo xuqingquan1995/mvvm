@@ -17,6 +17,7 @@ open class BaseViewModel @Inject constructor(private val repository: BaseReposit
     override fun onCleared() {
         super.onCleared()
         repository.onDestroy()
+        viewModelScope.cancel()
     }
 
     fun <T> launch(
