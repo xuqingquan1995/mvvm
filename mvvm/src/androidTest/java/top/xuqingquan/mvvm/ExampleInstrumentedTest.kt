@@ -1,4 +1,4 @@
-package top.xuqingquan
+package top.xuqingquan.mvvm
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
