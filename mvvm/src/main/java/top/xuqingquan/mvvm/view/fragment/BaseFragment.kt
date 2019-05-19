@@ -1,6 +1,5 @@
 package top.xuqingquan.mvvm.view.fragment
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import top.xuqingquan.base.view.fragment.SimpleFragment
 import top.xuqingquan.mvvm.viewModel.BaseViewModel
-
 import javax.inject.Inject
 
 /**
@@ -19,10 +17,6 @@ abstract class BaseFragment<VM : BaseViewModel, VDB : ViewDataBinding> : SimpleF
     lateinit var viewModel: VM
     protected lateinit var binding: VDB
 
-    final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        lifecycle.addObserver(viewModel)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     final override fun initView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
@@ -33,7 +27,6 @@ abstract class BaseFragment<VM : BaseViewModel, VDB : ViewDataBinding> : SimpleF
 
     override fun onDestroy() {
         super.onDestroy()
-        lifecycle.removeObserver(viewModel)
         binding.unbind()
     }
 }

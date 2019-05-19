@@ -17,14 +17,8 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : SimpleA
     lateinit var viewModel: VM
     protected lateinit var binding: VDB
 
-    final override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycle.addObserver(viewModel)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        lifecycle.removeObserver(viewModel)
         binding.unbind()
     }
 
