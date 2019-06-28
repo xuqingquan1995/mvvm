@@ -7,21 +7,25 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import top.xuqingquan.base.view.fragment.SimpleFragment
 import top.xuqingquan.mvvm.viewModel.BaseViewModel
-import javax.inject.Inject
 
 /**
  * Created by 许清泉 on 2019-04-21 00:40
  */
-abstract class BaseFragment<VM : BaseViewModel, VDB : ViewDataBinding> : SimpleFragment() {
-    @Inject
-    lateinit var viewModel: VM
-    protected lateinit var binding: VDB
+abstract class BaseFragment: SimpleFragment() {
 
+    @Suppress("LeakingThis")
+    protected var viewModel: BaseViewModel? = getVM()
+    @Suppress("LeakingThis")
+    protected var binding: ViewDataBinding = getBD()
 
     final override fun initView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         return binding.root
     }
+
+    protected abstract fun <VM : BaseViewModel> getVM(): VM?
+
+    protected abstract fun <VDB : ViewDataBinding> getBD(): VDB
 
     override fun initView(view: View) {}
 

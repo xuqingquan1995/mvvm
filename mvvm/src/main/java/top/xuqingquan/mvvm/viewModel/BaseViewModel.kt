@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import top.xuqingquan.BuildConfig
 import top.xuqingquan.base.model.repository.BaseRepository
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 /**
  * Created by 许清泉 on 2019-04-20 22:40
  */
-open class BaseViewModel @Inject constructor(private val repository: BaseRepository) : ViewModel() {
+open class BaseViewModel : ViewModel() {
+    private lateinit var repository: BaseRepository
 
     override fun onCleared() {
         super.onCleared()
