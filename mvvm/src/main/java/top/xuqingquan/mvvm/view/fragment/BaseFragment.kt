@@ -13,14 +13,27 @@ import top.xuqingquan.mvvm.viewModel.BaseViewModel
  */
 abstract class BaseFragment: SimpleFragment() {
 
-    @Suppress("LeakingThis")
-    protected var viewModel: BaseViewModel? = getVM()
-    @Suppress("LeakingThis")
-    protected var binding: ViewDataBinding = getBD()
+    protected var viewModel: BaseViewModel? = null
+        get() {
+            if (field == null) {
+                field = getVM()
+            }
+            return field!!
+        }
+        private set
+
+    protected var binding: ViewDataBinding? = null
+        get() {
+            if (field == null) {
+                field = getBD()
+            }
+            return field!!
+        }
+        private set
 
     final override fun initView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        return binding.root
+        return binding!!.root
     }
 
     protected abstract fun <VM : BaseViewModel> getVM(): VM?
@@ -31,6 +44,6 @@ abstract class BaseFragment: SimpleFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.unbind()
+        binding!!.unbind()
     }
 }

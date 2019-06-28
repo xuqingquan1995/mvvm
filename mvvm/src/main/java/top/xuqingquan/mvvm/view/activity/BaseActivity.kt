@@ -11,14 +11,27 @@ import top.xuqingquan.mvvm.viewModel.BaseViewModel
  */
 abstract class BaseActivity : SimpleActivity() {
 
-    @Suppress("LeakingThis")
-    protected var viewModel: BaseViewModel? = getVM()
-    @Suppress("LeakingThis")
-    protected var binding: ViewDataBinding = getBD()
+    protected var viewModel: BaseViewModel? = null
+        get() {
+            if (field == null) {
+                field = getVM()
+            }
+            return field!!
+        }
+        private set
+
+    protected var binding: ViewDataBinding? = null
+        get() {
+            if (field == null) {
+                field = getBD()
+            }
+            return field!!
+        }
+        private set
 
     override fun initView(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.setContentView(this, getLayoutId())
-        setContentView(binding.root)
+        setContentView(binding!!.root)
         initData(savedInstanceState)
     }
 
@@ -28,7 +41,7 @@ abstract class BaseActivity : SimpleActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.unbind()
+        binding!!.unbind()
     }
 
 }
