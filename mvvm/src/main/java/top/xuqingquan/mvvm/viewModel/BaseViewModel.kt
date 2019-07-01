@@ -4,18 +4,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import top.xuqingquan.BuildConfig
-import top.xuqingquan.base.model.repository.BaseRepository
+import top.xuqingquan.base.model.repository.IRepository
 import kotlin.coroutines.CoroutineContext
 
 /**
  * Created by 许清泉 on 2019-04-20 22:40
  */
-open class BaseViewModel : ViewModel() {
-    private lateinit var repository: BaseRepository
+abstract class BaseViewModel<R : IRepository> : ViewModel() {
+    protected var repository: R? = null
+        get() {
+            if (field == null) {
+                field = getIRepository()
+            }
+            return field
+        }
+        private set
 
     override fun onCleared() {
         super.onCleared()
-        repository.onDestroy()
+        repository?.onDestroy()
         viewModelScope.cancel()
     }
 
@@ -42,5 +49,7 @@ open class BaseViewModel : ViewModel() {
     fun <T> launch(context: CoroutineContext = Dispatchers.Default, tryBlock: suspend CoroutineScope.() -> T): Job {
         return launch(context, tryBlock, {}, {})
     }
+
+    protected abstract fun getIRepository(): R?
 
 }

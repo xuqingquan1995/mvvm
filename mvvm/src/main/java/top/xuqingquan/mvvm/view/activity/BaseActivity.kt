@@ -9,39 +9,29 @@ import top.xuqingquan.mvvm.viewModel.BaseViewModel
 /**
  * Created by 许清泉 on 2019-04-21 11:04
  */
-abstract class BaseActivity : SimpleActivity() {
+abstract class BaseActivity<VM : BaseViewModel<*>, VDB : ViewDataBinding> : SimpleActivity() {
 
-    protected var viewModel: BaseViewModel? = null
+    protected var viewModel: VM? = null
         get() {
             if (field == null) {
                 field = getVM()
             }
-            return field!!
+            return field
         }
         private set
 
-    protected var binding: ViewDataBinding? = null
-        get() {
-            if (field == null) {
-                field = getBD()
-            }
-            return field!!
-        }
-        private set
-
-    override fun initView(savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.setContentView(this, getLayoutId())
-        setContentView(binding!!.root)
-        initData(savedInstanceState)
-    }
-
-    protected abstract fun <VM : BaseViewModel> getVM(): VM?
-
-    protected abstract fun <VDB : ViewDataBinding> getBD(): VDB
+    protected lateinit var binding: VDB
 
     override fun onDestroy() {
         super.onDestroy()
-        binding!!.unbind()
+        binding.unbind()
     }
 
+    override fun initView(savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.setContentView(this, getLayoutId())
+        setContentView(binding.root)
+        initData(savedInstanceState)
+    }
+
+    protected abstract fun getVM(): VM?
 }

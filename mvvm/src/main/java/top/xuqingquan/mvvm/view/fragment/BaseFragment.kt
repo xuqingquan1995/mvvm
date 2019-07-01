@@ -11,39 +11,31 @@ import top.xuqingquan.mvvm.viewModel.BaseViewModel
 /**
  * Created by 许清泉 on 2019-04-21 00:40
  */
-abstract class BaseFragment: SimpleFragment() {
+abstract class BaseFragment<VM : BaseViewModel<*>, VDB : ViewDataBinding> : SimpleFragment() {
 
-    protected var viewModel: BaseViewModel? = null
+    protected var viewModel: VM? = null
         get() {
             if (field == null) {
                 field = getVM()
             }
-            return field!!
+            return field
         }
         private set
 
-    protected var binding: ViewDataBinding? = null
-        get() {
-            if (field == null) {
-                field = getBD()
-            }
-            return field!!
-        }
-        private set
+    protected lateinit var binding: VDB
+
 
     final override fun initView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        return binding!!.root
+        return binding.root
     }
-
-    protected abstract fun <VM : BaseViewModel> getVM(): VM?
-
-    protected abstract fun <VDB : ViewDataBinding> getBD(): VDB
 
     override fun initView(view: View) {}
 
     override fun onDestroy() {
         super.onDestroy()
-        binding!!.unbind()
+        binding.unbind()
     }
+
+    protected abstract fun getVM(): VM?
 }
