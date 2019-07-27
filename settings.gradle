@@ -1,3 +1,2 @@
-include ':sample'
-include ":mvvm", ':scaffold'
-project(':scaffold').projectDir = new File('Scaffold-submodule/scaffold')
+include ':sample', ":mvvm", ':scaffold'
+project(':scaffold').projectDir = new File('Scaffold/scaffold')
