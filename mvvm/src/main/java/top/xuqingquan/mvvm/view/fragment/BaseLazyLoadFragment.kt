@@ -1,6 +1,6 @@
 package top.xuqingquan.mvvm.view.fragment
 
-import androidx.databinding.ViewDataBinding
+import androidx.viewbinding.ViewBinding
 import top.xuqingquan.mvvm.viewModel.BaseViewModel
 
 /**
@@ -9,7 +9,7 @@ import top.xuqingquan.mvvm.viewModel.BaseViewModel
  */
 @Suppress("DEPRECATION")
 @Deprecated("懒加载使用其他方式")
-abstract class BaseLazyLoadFragment<VM : BaseViewModel<*>, VDB : ViewDataBinding> : BaseFragment<VM, VDB>() {
+abstract class BaseLazyLoadFragment<VM : BaseViewModel<*>, VB : ViewBinding> : BaseFragment<VM, VB>() {
     private var isViewCreated: Boolean = false // 界面是否已创建完成
     private var isVisibleToUser: Boolean = false // 是否对用户可见
     private var isDataLoaded: Boolean = false // 数据是否已请求

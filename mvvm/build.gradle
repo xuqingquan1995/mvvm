@@ -1,55 +1,58 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.xuqingquan1995'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion 31
     defaultConfig {
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner rootProject.ext.android.AndroidJUnitRunner
+        minSdkVersion 21
+        targetSdkVersion 31
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
-            debuggable false
             jniDebuggable false
             minifyEnabled true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     sourceSets {
         main {
             jniLibs.srcDir 'libs'//说明so的路径为该libs路径，关联所有so文件
         }
     }
-    //在Android代码块中添加如下配置：（可优化最上图中transformClassDexBuilderForDebug的时间）
-    dexOptions {
-        preDexLibraries true
-        maxProcessCount 8
-    }
 }
 
 dependencies {
-    api project(path: ':scaffold')
-    api rootProject.ext.deps.lifecycle_viewmodel_ktx
+    api 'top.xuqingquan:scaffold:3.1.1'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //test
-    testImplementation rootProject.ext.deps.junit
-    androidTestImplementation rootProject.ext.deps.espresso_core
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'top.xuqingquan'
+                artifactId = 'mvvm'
+                version = "${rootProject.ext.versionName}"
+            }
+        }
+    }
 }
