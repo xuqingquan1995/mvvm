@@ -1,2 +1,2 @@
-include ':sample', ":mvvm", ':scaffold'
-project(':scaffold').projectDir = new File('Scaffold/scaffold')
+include ':sample'
+include ':mvvm'
